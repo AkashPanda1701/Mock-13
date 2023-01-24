@@ -18,10 +18,11 @@ app.get('/', async (req, res) => {
     return res.status(200).send({users});
 });
 
-app.get('/applied/:id', async (req, res) => {
-    const {id} = req.params;
+app.get('/applied', async (req, res) => {
+    const {token} = req.headers;
     try {
-        const applied = await Applied.find({userId : id}).populate('jobId');
+        const {userId} = jwt.verify(token, process.env.JWT_SECRET);
+        const applied = await Applied.find({userId}).populate('jobId');
         return res.status(200).send({
             applied
         });
