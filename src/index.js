@@ -35,8 +35,11 @@ app.get('/applied/:id', async (req, res) => {
 });
 
 app.post('/applied', async (req, res) => {
-    const {userId, jobId} = req.body;
+    const {jobId} = req.body;
+    const {token} = req.headers;
+
     try {
+        const {userId} = jwt.verify(token, process.env.JWT_SECRET);
         const applied = await Applied.create({
             userId,
             jobId
