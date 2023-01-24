@@ -7,7 +7,7 @@ const cors = require('cors');
 const User = require('./models/user.model');
 const jwt = require('jsonwebtoken');
 const Job = require('./models/job.model');
-
+const Applied = require('./models/applied.modal');
 
 app.use(express.json());
 app.use(express.urlencoded({extended : true}));
@@ -17,6 +17,43 @@ app.get('/', async (req, res) => {
     const users = await User.find();
     return res.status(200).send({users});
 });
+
+app.get('/applied/:id', async (req, res) => {
+    const {id} = req.params;
+    try {
+        const applied = await Applied.find({userId : id}).populate('jobId');
+        return res.status(200).send({
+            applied
+        });
+
+    } catch (error) {
+        return res.status(400).send({
+            message : 'Something went wrong',
+            error : error.message
+        });
+    }
+});
+
+app.post('/applied', async (req, res) => {
+    const {userId, jobId} = req.body;
+    try {
+        const applied = await Applied.create({
+            userId,
+            jobId
+        });
+        return res.status(201).send({
+            message : 'Applied successfully',
+        });
+
+    } catch (error) {
+        return res.status(400).send({
+            message : 'Something went wrong',
+            error : error.message
+        });
+    }
+});
+
+
 
 //get all jobs
 
