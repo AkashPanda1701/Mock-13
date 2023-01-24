@@ -1,23 +1,21 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
-    fullname : {
+const jobSchema = new mongoose.Schema({
+    companyName : {
         type : String,
         required : true
     },
-    email : {
+    position : {
         type : String,
         required : true,
-        unique : true
     },
-    password : {
+    contract : {
         type : String,
         required : true
     },
-    role : {
+    location : {
         type : String,
-        enum : ['user', 'admin'],
-        default : 'user'
+        required : true
     },
 
 },{
@@ -26,6 +24,6 @@ const userSchema = new mongoose.Schema({
 }
 );
 
-const User = mongoose.model('user', userSchema);
+const Job = mongoose.model('job', jobSchema);
 
-module.exports = User;
+module.exports = Job;
